@@ -27,14 +27,29 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-btn
-          unelevated
-          color="primary"
-          icon="login"
-          label="Войти"
-          size="md"
-          class="q-ml-md"
-        />
+        <q-tabs>
+          <q-route-tab
+            icon="shopping_cart"
+            label="Корзина"
+            exact
+            replace
+            class="q-ml-md"
+          >
+            <q-badge
+              floating
+              style="font-size: 14px; font-weight: 600"
+              color="red"
+              >5</q-badge
+            >
+          </q-route-tab>
+          <q-route-tab
+            icon="login"
+            label="Войти"
+            exact
+            replace
+            class="q-ml-md"
+          />
+        </q-tabs>
       </q-toolbar>
     </q-header>
 
@@ -64,45 +79,45 @@ const linksList = [
   {
     title: "Двери",
     icon: "door_front",
-    link: "https://quasar.dev"
+    link: "https://quasar.dev",
   },
   {
     title: "Инструменты",
     icon: "handyman",
-    link: "https://github.com/quasarframework"
+    link: "https://github.com/quasarframework",
   },
   {
     title: "Сантехника",
     icon: "shower",
-    link: "https://chat.quasar.dev"
+    link: "https://chat.quasar.dev",
   },
   {
     title: "Строительные материалы",
     icon: "carpenter",
-    link: "https://forum.quasar.dev"
+    link: "https://forum.quasar.dev",
   },
   {
     title: "Товары для дома",
     icon: "house_siding",
-    link: "https://twitter.quasar.dev"
+    link: "https://twitter.quasar.dev",
   },
   {
     title: "Товары для бани",
     icon: "hot_tub",
-    link: "https://facebook.quasar.dev"
+    link: "https://facebook.quasar.dev",
   },
   {
     title: "Крепёж",
     icon: "square_foot",
-    link: "https://awesome.quasar.dev"
-  }
+    link: "https://awesome.quasar.dev",
+  },
 ];
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
-    EssentialLink
+    EssentialLink,
   },
 
   setup() {
@@ -116,9 +131,9 @@ export default defineComponent({
       showDrawer,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
-      }
+      },
     };
-  }
+  },
 });
 </script>
 <style>
