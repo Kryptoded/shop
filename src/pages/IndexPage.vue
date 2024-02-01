@@ -1,6 +1,9 @@
 <template>
   <q-page class="flex q-pa-md">
-    <product-card />
+    <section>
+      <div class="text-h4 q-mb-md">Акции!</div>
+      <product-card />
+    </section>
   </q-page>
 </template>
 
