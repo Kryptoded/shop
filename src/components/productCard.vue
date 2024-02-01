@@ -1,12 +1,14 @@
 <template>
-  <q-card class="product-card"> </q-card>
+  <q-card class="product-card" flat bordered>
+    <q-img src="../assets/linoleum_1.jpg" />
+  </q-card>
 </template>
 
-<sctipt setup>
+<script setup>
 const props = defineProps({
   name: {
     type: String,
-    default: ''
+    default: ""
   },
   price: {
     type: Number,
@@ -16,11 +18,13 @@ const props = defineProps({
     type: Number,
     default: 0
   }
-})
-</sctipt>
+});
+</script>
 
 <style scoped>
 .product-card {
   border-radius: 10px;
+  width: 300px;
+  height: 450px;
 }
 </style>
