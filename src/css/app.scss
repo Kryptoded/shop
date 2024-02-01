@@ -1,1 +1,7 @@
 // app global css in SCSS form
+.q-tooltip {
+  background-color: white;
+  color: black;
+  font-size: 18px;
+  border-bottom: 1px solid var(--q-primary);
+}
