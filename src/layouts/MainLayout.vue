@@ -11,8 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Стройматериалы </q-toolbar-title>
-
+        <q-toolbar-title>
+          <router-link :to="{ name: 'indexPage' }">Стройматериалы</router-link>
+        </q-toolbar-title>
         <q-input
           v-model="search"
           style="width: 400px"
@@ -30,16 +31,17 @@
         <q-tabs>
           <q-route-tab
             icon="shopping_cart"
-            label="Корзина"
+            :label="cartName"
             exact
             replace
             class="q-ml-md"
           >
             <q-badge
+              v-if="totalCartCount"
               floating
               style="font-size: 14px; font-weight: 600"
               color="red"
-              >5</q-badge
+              >{{ totalCartCount }}</q-badge
             >
           </q-route-tab>
           <q-route-tab
@@ -64,7 +66,7 @@
         />
       </q-list>
     </q-drawer>
-
+    {{ cartStore.totalPrice }}
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -72,68 +74,79 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
+import { useCartStore } from "src/stores/cartStore";
 
 const linksList = [
   {
     title: "Двери",
     icon: "door_front",
-    link: "https://quasar.dev",
+    link: "doors"
   },
   {
     title: "Инструменты",
     icon: "handyman",
-    link: "https://github.com/quasarframework",
+    link: "instruments"
   },
   {
     title: "Сантехника",
     icon: "shower",
-    link: "https://chat.quasar.dev",
+    link: "plumbing"
   },
   {
     title: "Строительные материалы",
     icon: "carpenter",
-    link: "https://forum.quasar.dev",
+    link: "building_materials"
   },
   {
     title: "Товары для дома",
     icon: "house_siding",
-    link: "https://twitter.quasar.dev",
+    link: "house_products"
   },
   {
     title: "Товары для бани",
     icon: "hot_tub",
-    link: "https://facebook.quasar.dev",
+    link: "bath_products"
   },
   {
     title: "Крепёж",
     icon: "square_foot",
-    link: "https://awesome.quasar.dev",
-  },
+    link: "fastener"
+  }
 ];
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
-    EssentialLink,
+    EssentialLink
   },
 
   setup() {
     const leftDrawerOpen = ref(false);
     const showDrawer = ref(true);
     const search = ref("");
+    const cartStore = useCartStore();
+    const cartName = computed(() => {
+      return cartStore.totalPrice ? cartStore.totalPrice : "Корзина";
+    });
+    const totalCartCount = computed(() => {
+      return cartStore.products.length;
+    });
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
       search,
       showDrawer,
+      cartName,
+      totalCartCount,
+      cartStore,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      }
     };
-  },
+  }
 });
 </script>
 <style>
