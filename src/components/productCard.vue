@@ -1,9 +1,9 @@
 <template>
   <q-card class="product-card" flat bordered>
-    <q-img src="../assets/linoleum_1.jpg" />
-    <div class="text-h6">Линолеум</div>
-    <price-component :price="500" :discount="300" />
-    <product-card-buttons :item="{ id: 0, price: 300 }" />
+    <q-img :src="props.image" :alt="props.image" />
+    <div class="text-h6">{{ props.name }}</div>
+    <price-component :price="props.price" :discount="props.discount" />
+    <product-card-buttons :item="props" />
   </q-card>
 </template>
 
@@ -22,6 +22,10 @@ const props = defineProps({
   discount: {
     type: Number,
     default: 0
+  },
+  image: {
+    type: String,
+    default: ""
   }
 });
 </script>
