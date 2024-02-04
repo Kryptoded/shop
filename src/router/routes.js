@@ -14,6 +14,12 @@ const routes = [
         props: true,
         component: () => import("pages/SortedPage.vue"),
       },
+      {
+        path: "/item/:id",
+        name: "productPage",
+        props: true,
+        component: () => import("pages/ProductPage.vue"),
+      },
     ],
   },
 

@@ -30,6 +30,7 @@ export const useUserStore = defineStore("user", {
       this.firstName = "";
       this.lastName = "";
       this.token = "";
+      localStorage.setItem("token", "");
       this.isAdmin = false;
     },
   },

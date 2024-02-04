@@ -19,20 +19,7 @@
         <q-toolbar-title>
           <router-link :to="{ name: 'indexPage' }">Стройматериалы</router-link>
         </q-toolbar-title>
-        <q-input
-          v-model="search"
-          style="width: 400px"
-          clearable
-          bg-color="white"
-          color="black"
-          dense
-          filled
-          placeholder="Поиск товаров"
-        >
-          <template #append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+        <search-product />
         <q-tabs>
           <q-route-tab
             icon="shopping_cart"
@@ -52,12 +39,12 @@
           <q-route-tab
             :icon="loginIcon"
             :label="loginName"
-            href="/#"
             class="q-ml-md"
             @click="openLoginModal"
           />
           <q-route-tab
             icon="settings"
+            v-if="isAdmin"
             label="админ"
             target="_blank"
             href="http://127.0.0.1:8000/admin"
@@ -88,6 +75,7 @@
 import { defineComponent, ref, computed } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
 import LoginForm from "../forms/LoginForm.vue";
+import SearchProduct from "src/components/SearchProduct.vue";
 import { useCartStore } from "src/stores/cartStore";
 import { useUserStore } from "src/stores/userStore";
 const linksList = [
@@ -134,18 +122,21 @@ export default defineComponent({
   components: {
     EssentialLink,
     LoginForm,
+    SearchProduct,
   },
 
   setup() {
     const leftDrawerOpen = ref(false);
     const showDrawer = ref(true);
-    const search = ref("");
     const cartStore = useCartStore();
     const loginModal = ref(false);
     const user = useUserStore();
 
     const loginName = computed(() => {
       return user.token ? "Выйти" : "Войти";
+    });
+    const isAdmin = computed(() => {
+      return user.isAdmin;
     });
     const loginIcon = computed(() => {
       return user.token ? "logout" : "login";
@@ -170,11 +161,11 @@ export default defineComponent({
       openLoginModal,
       loginModal,
       loginIcon,
-      search,
       showDrawer,
       cartName,
       totalCartCount,
       cartStore,
+      isAdmin,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },

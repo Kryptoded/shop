@@ -5,6 +5,7 @@ import { notify } from "src/utils/notify";
 export function useProduct() {
   const products = ref([]);
   const loading = ref(true);
+  const product = ref({});
 
   function getProducts(params = {}) {
     loading.value = true;
@@ -15,6 +16,21 @@ export function useProduct() {
       })
       .catch(() => {
         notify("Не удалось загрузить товары");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
+  function retrieve(id) {
+    loading.value = true;
+    return productService
+      .retrieve(id)
+      .then(({ data }) => {
+        product.value = data;
+      })
+      .catch(() => {
+        notify("Не удалось загрузить товар");
       })
       .finally(() => {
         loading.value = false;
@@ -38,5 +54,7 @@ export function useProduct() {
     getProducts,
     products,
     loading,
+    product,
+    retrieve,
   };
 }

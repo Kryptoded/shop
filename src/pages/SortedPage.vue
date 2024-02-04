@@ -3,12 +3,16 @@
     <div class="text-h4">
       {{ namePage[props.productType] }}
     </div>
-    <div class="row">
-      <product-card
-        v-for="product in products"
-        :key="product.id"
-        :item="product"
-      />
+    <div>
+      <q-inner-loading :showing="loading" />
+      <div class="row" v-if="products.length">
+        <product-card
+          v-for="product in products"
+          :key="product.id"
+          :item="product"
+        />
+      </div>
+      <div class="text-h5 q-mt-md" v-else>Товаров нет :(</div>
     </div>
   </div>
 </template>
@@ -32,7 +36,7 @@ const props = defineProps({
     default: "",
   },
 });
-const { getProducts, products } = useProduct();
+const { getProducts, products, loading } = useProduct();
 
 watch(
   props,

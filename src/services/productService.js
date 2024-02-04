@@ -7,4 +7,7 @@ export default {
   create(formData) {
     return api.post("products", formData);
   },
+  retrieve(id) {
+    return api.get(`products/${id}`);
+  },
 };

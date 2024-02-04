@@ -10,7 +10,11 @@
       @click="minus"
       style="border-bottom-left-radius: 10px; border-top-left-radius: 10px"
     />
-    <div class="count q-px-md bg-primary" style="height: 100%">
+    <div
+      class="count q-px-md bg-primary"
+      style="height: 100%"
+      :style="props.countStyle"
+    >
       {{ count }}
     </div>
     <q-btn
@@ -20,7 +24,9 @@
       class="cart-button text-white no-padding"
       @click="add"
       style="border-bottom-right-radius: 10px; border-top-right-radius: 10px"
-    />
+    >
+      <q-tooltip>Добавить в корзину</q-tooltip>
+    </q-btn>
   </div>
 </template>
 
@@ -31,6 +37,10 @@ const props = defineProps({
   item: {
     type: Object,
     default: () => {},
+  },
+  countStyle: {
+    type: String,
+    default: "",
   },
 });
 const cartStore = useCartStore();
