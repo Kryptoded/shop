@@ -2,7 +2,14 @@
   <q-page class="flex q-pa-md">
     <section>
       <div class="text-h4 q-mb-md">Акции!</div>
-      <product-card v-for="product in products" :key="product.id" :="product" />
+      <div class="row">
+        <product-card
+          v-for="product in products"
+          :key="product.id"
+          :item="product"
+          class="q-ma-md"
+        />
+      </div>
     </section>
   </q-page>
 </template>

@@ -30,8 +30,8 @@ import { computed } from "vue";
 const props = defineProps({
   item: {
     type: Object,
-    default: () => {}
-  }
+    default: () => {},
+  },
 });
 const cartStore = useCartStore();
 function add() {

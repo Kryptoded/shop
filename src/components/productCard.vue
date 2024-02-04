@@ -1,9 +1,12 @@
 <template>
   <q-card class="product-card" flat bordered>
-    <q-img :src="props.image" :alt="props.image" />
-    <div class="text-h6">{{ props.name }}</div>
-    <price-component :price="props.price" :discount="props.discount" />
-    <product-card-buttons :item="props" />
+    <q-img :src="props.item.image" :alt="props.item.image" />
+    <div class="text-h6">{{ props.item.name }}</div>
+    <price-component
+      :price="props.item.price"
+      :discount="props.item.discount_price"
+    />
+    <product-card-buttons :item="props.item" />
   </q-card>
 </template>
 
@@ -11,22 +14,10 @@
 import PriceComponent from "components/PriceComponent.vue";
 import productCardButtons from "./productCardButtons.vue";
 const props = defineProps({
-  name: {
-    type: String,
-    default: ""
+  item: {
+    type: Object,
+    default: () => {},
   },
-  price: {
-    type: Number,
-    default: 1000
-  },
-  discount: {
-    type: Number,
-    default: 0
-  },
-  image: {
-    type: String,
-    default: ""
-  }
 });
 </script>
 

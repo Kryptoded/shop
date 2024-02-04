@@ -1,5 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <q-dialog v-model="loginModal">
+      <q-card>
+        <login-form @success="loginModal = false" />
+      </q-card>
+    </q-dialog>
     <q-header reveal class="app-header">
       <q-toolbar>
         <q-btn
@@ -45,10 +50,17 @@
             >
           </q-route-tab>
           <q-route-tab
-            icon="login"
-            label="Войти"
-            exact
-            replace
+            :icon="loginIcon"
+            :label="loginName"
+            href="/#"
+            class="q-ml-md"
+            @click="openLoginModal"
+          />
+          <q-route-tab
+            icon="settings"
+            label="админ"
+            target="_blank"
+            href="http://127.0.0.1:8000/admin"
             class="q-ml-md"
           />
         </q-tabs>
@@ -58,7 +70,6 @@
     <q-drawer v-model="showDrawer" :mini="leftDrawerOpen" bordered>
       <q-list>
         <q-item-label header> Каталог </q-item-label>
-
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -76,51 +87,53 @@
 <script>
 import { defineComponent, ref, computed } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
+import LoginForm from "../forms/LoginForm.vue";
 import { useCartStore } from "src/stores/cartStore";
-
+import { useUserStore } from "src/stores/userStore";
 const linksList = [
   {
     title: "Двери",
     icon: "door_front",
-    link: "doors"
+    link: "doors",
   },
   {
     title: "Инструменты",
     icon: "handyman",
-    link: "instruments"
+    link: "instruments",
   },
   {
     title: "Сантехника",
     icon: "shower",
-    link: "plumbing"
+    link: "plumbing",
   },
   {
     title: "Строительные материалы",
     icon: "carpenter",
-    link: "building_materials"
+    link: "building_materials",
   },
   {
     title: "Товары для дома",
     icon: "house_siding",
-    link: "house_products"
+    link: "house_products",
   },
   {
     title: "Товары для бани",
     icon: "hot_tub",
-    link: "bath_products"
+    link: "bath_products",
   },
   {
     title: "Крепёж",
     icon: "square_foot",
-    link: "fastener"
-  }
+    link: "fastener",
+  },
 ];
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
-    EssentialLink
+    EssentialLink,
+    LoginForm,
   },
 
   setup() {
@@ -128,6 +141,22 @@ export default defineComponent({
     const showDrawer = ref(true);
     const search = ref("");
     const cartStore = useCartStore();
+    const loginModal = ref(false);
+    const user = useUserStore();
+
+    const loginName = computed(() => {
+      return user.token ? "Выйти" : "Войти";
+    });
+    const loginIcon = computed(() => {
+      return user.token ? "logout" : "login";
+    });
+    function openLoginModal() {
+      if (!user.token) {
+        loginModal.value = true;
+      } else {
+        user.logout();
+      }
+    }
     const cartName = computed(() => {
       return cartStore.totalPrice ? cartStore.totalPrice : "Корзина";
     });
@@ -137,6 +166,10 @@ export default defineComponent({
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
+      loginName,
+      openLoginModal,
+      loginModal,
+      loginIcon,
       search,
       showDrawer,
       cartName,
@@ -144,9 +177,9 @@ export default defineComponent({
       cartStore,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
-      }
+      },
     };
-  }
+  },
 });
 </script>
 <style>

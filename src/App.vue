@@ -2,10 +2,15 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { useUserStore } from "./stores/userStore";
+import { onMounted } from "vue";
 
-export default defineComponent({
-  name: 'App'
-})
+const user = useUserStore();
+
+onMounted(async () => {
+  if (localStorage.getItem("token")) {
+    await user.getUserByToken(localStorage.getItem("token"));
+  }
+});
 </script>
