@@ -24,12 +24,30 @@
     <div class="q-mt-md">
       <div class="text-h6">Комментарии:</div>
       <div class="column">
-        <q-input type="textarea" placeholder="Добавить комментарий" outlined />
+        <q-input
+          v-model="textComment"
+          type="textarea"
+          placeholder="Добавить комментарий"
+          outlined
+        />
         <q-btn
           label="Добавить"
           color="primary"
           class="q-mt-md self-end"
           :disable="!isAuthorized"
+          @click="addComment"
+        >
+          <q-tooltip v-if="!isAuthorized"
+            >Для добавления комментария авторизируйтесь в системе</q-tooltip
+          >
+        </q-btn>
+      </div>
+      <div>
+        <q-inner-loading :showing="commentLoading" />
+        <ProductComment
+          v-for="comment in comments"
+          :key="comment.id"
+          :comment="comment"
         />
       </div>
     </div>
@@ -42,27 +60,50 @@ import { useProduct } from "../composables/useProduct";
 import PriceComponent from "src/components/PriceComponent.vue";
 import productCardButtons from "src/components/productCardButtons.vue";
 import { useUserStore } from "src/stores/userStore";
+import { useComments } from "src/composables/useComments";
+import ProductComment from "src/components/ProductComment.vue";
+
 const props = defineProps({
   id: {
     type: Number,
-    default: null,
-  },
+    default: null
+  }
 });
 
 const { loading, retrieve, product } = useProduct();
+const {
+  loading: commentLoading,
+  getComments,
+  comments,
+  createComment
+} = useComments();
+const user = useUserStore();
+const textComment = ref("");
 
 function retrieveProduct() {
   return retrieve(props.id);
 }
 
-const user = useUserStore();
+function getCommentsByProduct() {
+  return getComments({ product: props.id });
+}
+
+async function addComment() {
+  if (textComment.value) {
+    await createComment({
+      user: user.id,
+      product: props.id,
+      text: textComment.value
+    });
+  }
+}
 
 const isAuthorized = computed(() => {
   return Boolean(user.token);
 });
 
 onBeforeMount(async () => {
-  await retrieveProduct();
+  await Promise.all([retrieveProduct(), getCommentsByProduct()]);
 });
 </script>
 

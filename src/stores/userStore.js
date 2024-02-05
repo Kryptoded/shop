@@ -18,6 +18,7 @@ export const useUserStore = defineStore("user", {
       this.lastName = data.last_name;
       this.firstName = data.first_name;
       this.isAdmin = data.is_superuser;
+      this.id = data.id;
     },
     getUserByToken(token) {
       return api
