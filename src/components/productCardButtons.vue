@@ -7,7 +7,7 @@
       dense
       :disable="count <= 0"
       class="cart-button text-white no-padding"
-      @click="minus"
+      @click.prevent="minus"
       style="border-bottom-left-radius: 10px; border-top-left-radius: 10px"
     />
     <div
@@ -22,7 +22,7 @@
       color="primary"
       unelevated
       class="cart-button text-white no-padding"
-      @click="add"
+      @click.prevent="add"
       style="border-bottom-right-radius: 10px; border-top-right-radius: 10px"
     >
       <q-tooltip>Добавить в корзину</q-tooltip>
@@ -36,12 +36,12 @@ import { computed } from "vue";
 const props = defineProps({
   item: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   countStyle: {
     type: String,
-    default: "",
-  },
+    default: ""
+  }
 });
 const cartStore = useCartStore();
 function add() {
@@ -52,8 +52,12 @@ function minus() {
 }
 
 const count = computed(() => {
-  const item = cartStore.products.find((item) => item.id === props.item.id);
-  return item ? item.count : 0;
+  return cartStore.products.reduce((acc, item) => {
+    if (item.product.id === props.item.id) {
+      acc++;
+    }
+    return acc;
+  }, 0);
 });
 </script>
 
