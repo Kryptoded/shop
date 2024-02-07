@@ -20,12 +20,16 @@
     <q-menu no-focus :target="searchInput" fit ref="menu">
       <q-list>
         <q-inner-loading :showing="loading" />
-        <q-item v-if="!products.length">Не найдено</q-item>
-        <q-item v-for="product in products" :key="product.id">
-          {{ product.name }}
-          {{ product.discount_price ? product.discount_price : product.price }}
-          <q-icon name="currency_ruble" size="xs" />
-        </q-item>
+        <div v-show="!loading">
+          <q-item v-if="!products.length">Не найдено</q-item>
+          <q-item v-for="product in products" :key="product.id">
+            {{ product.name }}
+            {{
+              product.discount_price ? product.discount_price : product.price
+            }}
+            <q-icon name="currency_ruble" size="xs" />
+          </q-item>
+        </div>
       </q-list>
     </q-menu>
   </div>

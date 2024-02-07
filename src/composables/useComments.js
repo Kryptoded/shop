@@ -8,7 +8,7 @@ export function useComments() {
   function getComments(params = {}) {
     loading.value = true;
     return commentService
-      .list()
+      .list(params)
       .then(({ data }) => {
         comments.value = data;
       })
