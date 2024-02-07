@@ -21,6 +21,7 @@
       icon="add"
       color="primary"
       unelevated
+      :disabled="isAuthorized"
       class="cart-button text-white no-padding"
       @click.prevent="add"
       style="border-bottom-right-radius: 10px; border-top-right-radius: 10px"
@@ -32,6 +33,7 @@
 
 <script setup>
 import { useCartStore } from "stores/cartStore";
+import { useUserStore } from "src/stores/userStore";
 import { computed } from "vue";
 const props = defineProps({
   item: {
@@ -58,6 +60,12 @@ const count = computed(() => {
     }
     return acc;
   }, 0);
+});
+
+const user = useUserStore();
+
+const isAuthorized = computed(() => {
+  return Boolean(user.token);
 });
 </script>
 
