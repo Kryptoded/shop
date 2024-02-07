@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-
+import { api } from "src/boot/axios";
 export const useCartStore = defineStore("cart", {
   state: () => ({
     products: [],
@@ -17,6 +17,12 @@ export const useCartStore = defineStore("cart", {
     },
   },
   actions: {
+    initializeCart() {
+      return api.get("cart").then(({ data }) => {
+        this.products = data;
+      });
+    },
+
     addToCart(productItem) {
       const index = this.products.findIndex(
         (item) => item.id === productItem.id
