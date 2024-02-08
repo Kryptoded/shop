@@ -11,7 +11,7 @@ export function useAuth() {
       .authenticate(params)
       .then(({ data }) => {
         localStorage.setItem("token", data.token);
-        user.setData(data);
+        user.setData(data.user);
         notify("Успешно", "positive");
       })
       .catch((e) => {
