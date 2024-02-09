@@ -26,6 +26,8 @@
             :label="cartName"
             exact
             replace
+            :disable="isAuthorized"
+            :to="{ name: 'cartPage' }"
             class="q-ml-md"
           >
             <q-badge
@@ -81,38 +83,38 @@ const linksList = [
   {
     title: "Двери",
     icon: "door_front",
-    link: "doors"
+    link: "doors",
   },
   {
     title: "Инструменты",
     icon: "handyman",
-    link: "instruments"
+    link: "instruments",
   },
   {
     title: "Сантехника",
     icon: "shower",
-    link: "plumbing"
+    link: "plumbing",
   },
   {
     title: "Строительные материалы",
     icon: "carpenter",
-    link: "building_materials"
+    link: "building_materials",
   },
   {
     title: "Товары для дома",
     icon: "house_siding",
-    link: "house_products"
+    link: "house_products",
   },
   {
     title: "Товары для бани",
     icon: "hot_tub",
-    link: "bath_products"
+    link: "bath_products",
   },
   {
     title: "Крепёж",
     icon: "square_foot",
-    link: "fastener"
-  }
+    link: "fastener",
+  },
 ];
 
 export default defineComponent({
@@ -121,7 +123,7 @@ export default defineComponent({
   components: {
     EssentialLink,
     LoginForm,
-    SearchProduct
+    SearchProduct,
   },
 
   setup() {
@@ -140,11 +142,15 @@ export default defineComponent({
     const loginIcon = computed(() => {
       return user.token ? "logout" : "login";
     });
+    const isAuthorized = computed(() => {
+      return !Boolean(user.token);
+    });
     function openLoginModal() {
       if (!user.token) {
         loginModal.value = true;
       } else {
         user.logout();
+        cartStore.reset();
       }
     }
     const cartName = computed(() => {
@@ -167,9 +173,9 @@ export default defineComponent({
       isAdmin,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
-      }
+      },
     };
-  }
+  },
 });
 </script>
 <style>

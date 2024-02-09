@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
+
 export const useCartStore = defineStore("cart", {
   state: () => ({
     products: [],
@@ -15,12 +16,25 @@ export const useCartStore = defineStore("cart", {
     totalCount: (state) => {
       return state.products.length;
     },
+    uniqueProducts(state) {
+      const uniqueMap = [];
+      state.products.forEach((item) => {
+        if (checkOnUnique(uniqueMap, item.product.id)) {
+          uniqueMap.push(item.product);
+        }
+      });
+      return uniqueMap;
+    },
   },
   actions: {
     initialize() {
       return api.get("cart").then(({ data }) => {
         this.products = data;
       });
+    },
+
+    reset() {
+      this.products = [];
     },
 
     addToCart(productItem) {

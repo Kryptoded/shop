@@ -24,14 +24,18 @@
       />
     </div>
     <q-separator class="q-my-sm" />
-    <div>Нет аккаунта?</div>
+    <span class="q-pr-md">Нет аккаунта?</span>
+    <router-link :to="{ name: 'registrationPage' }" style="color: blue"
+      >Зарегистрироваться!
+    </router-link>
   </q-form>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useAuth } from "../composables/useAuth";
-
+import { useCartStore } from "../stores/cartStore";
+const cart = useCartStore();
 const emits = defineEmits(["success"]);
 const formData = ref({
   password: "",
@@ -43,6 +47,7 @@ const { login } = useAuth();
 function submit() {
   login(formData.value).then(() => {
     emits("success");
+    cart.initialize();
   });
 }
 </script>

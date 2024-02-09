@@ -20,6 +20,10 @@ export function useAuth() {
       });
   }
 
+  function registration(formData) {
+    return authService.registration(formData);
+  }
+
   function logout() {
     return authService.logout();
   }
