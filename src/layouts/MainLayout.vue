@@ -165,6 +165,7 @@ export default defineComponent({
       loginName,
       openLoginModal,
       loginModal,
+      isAuthorized,
       loginIcon,
       showDrawer,
       cartName,

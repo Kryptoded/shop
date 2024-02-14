@@ -5,7 +5,7 @@
       outlined
       clearable
       label="Логин"
-      :rules="[(val) => val || 'Поле обязательно']"
+      :rules="[(val) => Boolean(val) || 'Поле обязательно']"
       class="q-mb-md"
     />
     <q-input
@@ -15,7 +15,7 @@
       label="Пароль"
       class="q-mb-md"
       type="password"
-      :rules="[(val) => val || 'Поле обязательно']"
+      :rules="[(val) => Boolean(val) || 'Поле обязательно']"
     />
     <q-input
       v-model="formData.name"
@@ -23,14 +23,14 @@
       clearable
       label="Имя"
       class="q-mb-md"
-      :rules="[(val) => val || 'Поле обязательно']"
+      :rules="[(val) => Boolean(val) || 'Поле обязательно']"
     />
     <q-input
       v-model="formData.second_name"
       outlined
       clearable
       label="Фамилия"
-      :rules="[(val) => val || 'Поле обязательно']"
+      :rules="[(val) => Boolean(val) || 'Поле обязательно']"
       class="q-mb-md"
     />
     <div class="row justify-end">
@@ -42,6 +42,12 @@
 
 <script setup>
 import { ref } from "vue";
+import { useAuth } from "../composables/useAuth";
+import { notify } from "../utils/notify";
+
+const { registration } = useAuth();
+
+const emit = defineEmits(["ok"]);
 
 const formData = ref({
   username: "",
@@ -50,5 +56,16 @@ const formData = ref({
   second_name: "",
 });
 
-function submit() {}
+function submit() {
+  registration(formData.value)
+    .then(() => {
+      notify("Зарегистрировано", "positive");
+      emit("ok");
+    })
+    .catch((e) => {
+      for (let key in Object.keys(e.response.data)) {
+        notify(e.response.data[key][0]);
+      }
+    });
+}
 </script>

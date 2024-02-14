@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{ name: 'productPage', params: { id: item.id } }">
     <q-card class="product-card" flat bordered>
-      <q-img :src="props.item.image" :alt="props.item.image" />
+      <q-img :src="props.item.image" :alt="props.item.image" style="flex: 1" />
       <div class="text-h6">{{ props.item.name }}</div>
       <price-component
         :price="props.item.price"
@@ -31,6 +31,9 @@ const props = defineProps({
   padding: 10px;
   transition: all 0.25s ease;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-card:hover {

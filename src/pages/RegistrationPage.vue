@@ -2,7 +2,7 @@
   <div>
     <div style="width: 600px; margin: 0 auto">
       <div class="header">Регистрация</div>
-      <registration-form />
+      <registration-form @ok="goToMain" />
     </div>
   </div>
 </template>
@@ -19,6 +19,10 @@ onMounted(() => {
     router.replace({ name: "indexPage" });
   }
 });
+
+function goToMain() {
+  router.replace({ name: "indexPage" });
+}
 </script>
 <style>
 .header {

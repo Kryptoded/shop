@@ -4,7 +4,7 @@ export default {
   authenticate(params) {
     return api.post("auth/", params);
   },
-  // registration(params) {
-  //   return api.post('')
-  // }
+  registration(params) {
+    return api.post("user/", params);
+  },
 };
